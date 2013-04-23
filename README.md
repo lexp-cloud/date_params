@@ -24,8 +24,10 @@ Or install it yourself as:
 Include the controller additions in the controller that needs to parse
 date parameters and then specify dates to be formatted:
 ```ruby
+# e.g. parameters come in as: { sign_up_on: '01/05/2013' }
 include DateParams::ControllerAdditions
 date_params :sign_up_on
+# and now params[:sign_up_on] is a Date object
 ```
 
 Any options that a `before_filter` accepts can be passed in:
@@ -48,8 +50,7 @@ include DateParams::ControllerAdditions
 date_params [:user, :searched_on], [:company, :sign_up_on]
 ```
 
-Date format can be passed as an option, default is `%m/%d/%Y`:
-`namespace` option:
+Date format can be passed as an option (default is `%m/%d/%Y`):
 ```ruby
 include DateParams::ControllerAdditions
 date_params :search_on, :sign_up_on, date_format: '%d-%m-%Y'
