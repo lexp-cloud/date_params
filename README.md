@@ -1,11 +1,13 @@
 # DateParams
 
-Dates passed in by date-pickers or text-input fields need to be
-converted from their string format to a ruby Date to be able to be saved
-and manipulated. This gem provides a simple controller add-on to
+Dates and times passed in as strings date-pickers or time-pickers need to be
+converted from their string format to a ruby Date or DateTime to be able to be saved
+and manipulated. This gem provides two simple controller add-ons to
 facilitate the conversion.
 
 ## Installation
+
+Rails 3.x and Ruby 1.9.3 or 2.x required.
 
 Add this line to your application's Gemfile:
 
@@ -20,6 +22,8 @@ Or install it yourself as:
     $ gem install date_params
 
 ## Usage
+
+### date_params
 
 Include the controller additions in the controller that needs to parse
 date parameters and then specify dates to be formatted:
@@ -46,16 +50,36 @@ include DateParams::ControllerAdditions
 date_params :searched_on, :sign_up_on, namespace: :user
 ```
 
-Or specify a namespace for each parameter individually:
-```ruby
-include DateParams::ControllerAdditions
-date_params [:user, :searched_on], [:company, :sign_up_on]
-```
-
 Date format can be passed as an option (default is `%m/%d/%Y`):
 ```ruby
 include DateParams::ControllerAdditions
 date_params :search_on, :sign_up_on, date_format: '%d-%m-%Y'
+```
+
+### datetime_params
+
+Include the controller additions in the controller that needs to parse
+date and time parameters and then specify dates to be formatted:
+```ruby
+class UsersController < ApplicationController
+  # e.g. parameters come in as: { sign_up_on: '01/05/2013', sign_up_time: '7:30 pm' }
+  include DateParams::ControllerAdditions
+  datetime_params :sign_up_at
+  # and now params[:sign_up_at] is a timezone-aware DateTime object
+end
+```
+
+In addition to the `:namespace` and `:date_format` options, the time format can be specified
+(default is `%I:%M %p`):
+```ruby
+include DateParams::ControllerAdditions
+date_params :sign_up_at, time_format: '%H:%M:%S'
+```
+
+To specify exactly which fields should be parsed:
+```ruby
+include DateParams::ControllerAdditions
+date_params { date: :sign_up_on, time: :sign_up_time, field: :sign_up_at }, only: :create
 ```
 
 ## Contributing
