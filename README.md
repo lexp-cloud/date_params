@@ -56,7 +56,7 @@ date_params :search_on, :sign_up_on, date_format: '%d-%m-%Y'
 Specify the datetime fields that need to be parsed:
 ```ruby
 class UsersController < ApplicationController
-  # e.g. parameters come in as: { sign_up_on: '01/05/2013', sign_up_time: '7:30 pm' }
+  # e.g. parameters come in as: { sign_up_at_date: '01/05/2013', sign_up_at_time: '7:30 pm' }
   datetime_params :sign_up_at
   # and now params[:sign_up_at] is a timezone-aware DateTime object
 end

@@ -52,20 +52,20 @@ describe DateParams::Parser do
     before { Time.zone = 'EST' }
     let(:params) do
       {
-          created_on: '08/10/2012',
-          created_time: '12:30 am',
+          created_at_date: '08/10/2012',
+          created_at_time: '12:30 am',
           invalid_time: '1111',
           empty_time: '',
           user: {
-              notified_on: '08/10/2012',
-              notified_time: '12:30 am'
+              notified_at_date: '08/10/2012',
+              notified_at_time: '12:30 am'
           }
       }
     end
     let(:datetime) { Time.zone.parse '2012-08-10 00:30' }
 
     context 'invalid format' do
-      let(:param) { { date: :created_on, time: :invalid_time, field: :invalid_time } }
+      let(:param) { { date: :created_at_date, time: :invalid_time, field: :created_at } }
       it 'should raise when unknown format' do
         expect { expect parser.parse_datetime_param! }.to raise_error ArgumentError
       end
@@ -88,9 +88,9 @@ describe DateParams::Parser do
       end
 
       context 'time is empty' do
-        let(:param) { { date: :created_on, time: :empty_time, field: :created_at } }
+        let(:param) { { date: :created_at_date, time: :empty_time, field: :created_at } }
         it 'parses the date but not the time' do
-          params[:created_on].should eq datetime.to_date
+          params[:created_at_date].should eq datetime.to_date
           params[:created_at].should be_nil
         end
       end

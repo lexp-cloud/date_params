@@ -31,11 +31,10 @@ class DateParams::Parser
       fields = param
       fields.assert_valid_keys :date, :time, :field
     else
-      field_root = param.to_s.gsub /_at\z/, ''
       fields = {
-          date: "#{field_root}_on".to_sym,
-          time: "#{field_root}_time".to_sym,
-          field: "#{field_root}_at".to_sym
+          date: "#{param}_date".to_sym,
+          time: "#{param}_time".to_sym,
+          field: param
       }
     end
 
