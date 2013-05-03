@@ -24,3 +24,9 @@ module DateParams
     end
   end
 end
+
+if defined? ActionController::Base
+  ActionController::Base.class_eval do
+    include DateParams::ControllerAdditions
+  end
+end

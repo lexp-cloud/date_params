@@ -25,12 +25,10 @@ Or install it yourself as:
 
 ### date_params
 
-Include the controller additions in the controller that needs to parse
-date parameters and then specify dates to be formatted:
+Specify the dates to be parsed:
 ```ruby
 class UsersController < ApplicationController
   # e.g. parameters come in as: { sign_up_on: '01/05/2013' }
-  include DateParams::ControllerAdditions
   date_params :sign_up_on
   # and now params[:sign_up_on] is a Date object
 end
@@ -38,7 +36,6 @@ end
 
 Any options that a `before_filter` accepts can be passed in:
 ```ruby
-include DateParams::ControllerAdditions
 date_params :sign_up_on, only: [:index]
 ```
 
@@ -46,24 +43,20 @@ If date fields are namespaced in a model that can be specified with the
 `namespace` option:
 ```ruby
 # will parse parameters in the format of: { user: { searched_on: '01/04/2013', sign_up_on: '04/03/2013' } }
-include DateParams::ControllerAdditions
 date_params :searched_on, :sign_up_on, namespace: :user
 ```
 
 Date format can be passed as an option (default is `%m/%d/%Y`):
 ```ruby
-include DateParams::ControllerAdditions
 date_params :search_on, :sign_up_on, date_format: '%d-%m-%Y'
 ```
 
 ### datetime_params
 
-Include the controller additions in the controller that needs to parse
-date and time parameters and then specify dates to be formatted:
+Specify the datetime fields that need to be parsed:
 ```ruby
 class UsersController < ApplicationController
   # e.g. parameters come in as: { sign_up_on: '01/05/2013', sign_up_time: '7:30 pm' }
-  include DateParams::ControllerAdditions
   datetime_params :sign_up_at
   # and now params[:sign_up_at] is a timezone-aware DateTime object
 end
@@ -72,13 +65,11 @@ end
 In addition to the `:namespace` and `:date_format` options, the time format can be specified
 (default is `%I:%M %p`):
 ```ruby
-include DateParams::ControllerAdditions
 date_params :sign_up_at, time_format: '%H:%M:%S'
 ```
 
 To specify exactly which fields should be parsed:
 ```ruby
-include DateParams::ControllerAdditions
 date_params { date: :sign_up_on, time: :sign_up_time, field: :sign_up_at }, only: :create
 ```
 
