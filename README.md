@@ -1,11 +1,13 @@
 # DateParams
 
-Dates passed in by date-pickers or text-input fields need to be
-converted from their string format to a ruby Date to be able to be saved
-and manipulated. This gem provides a simple controller add-on to
+Dates and times passed in as strings date-pickers or time-pickers need to be
+converted from their string format to a ruby Date or DateTime to be able to be saved
+and manipulated. This gem provides two simple controller add-ons to
 facilitate the conversion.
 
 ## Installation
+
+Rails 3.x and Ruby 1.9.3 or 2.x required.
 
 Add this line to your application's Gemfile:
 
@@ -21,12 +23,12 @@ Or install it yourself as:
 
 ## Usage
 
-Include the controller additions in the controller that needs to parse
-date parameters and then specify dates to be formatted:
+### date_params
+
+Specify the dates to be parsed:
 ```ruby
 class UsersController < ApplicationController
   # e.g. parameters come in as: { sign_up_on: '01/05/2013' }
-  include DateParams::ControllerAdditions
   date_params :sign_up_on
   # and now params[:sign_up_on] is a Date object
 end
@@ -34,7 +36,6 @@ end
 
 Any options that a `before_filter` accepts can be passed in:
 ```ruby
-include DateParams::ControllerAdditions
 date_params :sign_up_on, only: [:index]
 ```
 
@@ -42,20 +43,34 @@ If date fields are namespaced in a model that can be specified with the
 `namespace` option:
 ```ruby
 # will parse parameters in the format of: { user: { searched_on: '01/04/2013', sign_up_on: '04/03/2013' } }
-include DateParams::ControllerAdditions
 date_params :searched_on, :sign_up_on, namespace: :user
-```
-
-Or specify a namespace for each parameter individually:
-```ruby
-include DateParams::ControllerAdditions
-date_params [:user, :searched_on], [:company, :sign_up_on]
 ```
 
 Date format can be passed as an option (default is `%m/%d/%Y`):
 ```ruby
-include DateParams::ControllerAdditions
 date_params :search_on, :sign_up_on, date_format: '%d-%m-%Y'
+```
+
+### datetime_params
+
+Specify the datetime fields that need to be parsed:
+```ruby
+class UsersController < ApplicationController
+  # e.g. parameters come in as: { sign_up_at_date: '01/05/2013', sign_up_at_time: '7:30 pm' }
+  datetime_params :sign_up_at
+  # and now params[:sign_up_at] is a timezone-aware DateTime object
+end
+```
+
+In addition to the `:namespace` and `:date_format` options, the time format can be specified
+(default is `%I:%M %p`):
+```ruby
+date_params :sign_up_at, time_format: '%H:%M:%S'
+```
+
+To specify exactly which fields should be parsed:
+```ruby
+date_params { date: :sign_up_on, time: :sign_up_time, field: :sign_up_at }, only: :create
 ```
 
 ## Contributing
