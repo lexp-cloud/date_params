@@ -1,5 +1,7 @@
 # DateParams
 
+[![Build Status](https://travis-ci.org/LessonPlanet/date_params.png)](https://travis-ci.org/LessonPlanet/date_params)
+
 Dates and times passed in as strings date-pickers or time-pickers need to be
 converted from their string format to a ruby Date or DateTime to be able to be saved
 and manipulated. This gem provides two simple controller add-ons to
