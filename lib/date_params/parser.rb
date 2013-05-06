@@ -54,7 +54,7 @@ class DateParams::Parser
     '%m/%d/%Y'
   end
 
-  def default_date_format
+  def default_time_format
     '%I:%M %p'
   end
 
