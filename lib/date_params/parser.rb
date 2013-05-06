@@ -14,8 +14,8 @@ class DateParams::Parser
     @param = param
     @options = options
     @params = params
-    @date_format =  options.fetch :date_format, '%m/%d/%Y'
-    @time_format =  options.fetch :time_format, '%I:%M %p'
+    @date_format =  options.fetch :date_format, default_date_format
+    @time_format =  options.fetch :time_format, default_time_format
   end
 
   def parse_date_param!(field = param)
@@ -46,6 +46,16 @@ class DateParams::Parser
     datetime_string = "#{date.iso8601}T#{time_string}#{Time.zone.name}"
     datetime = Time.strptime(datetime_string, datetime_format).in_time_zone(Time.zone)
     traversed_params[fields[:field]] = datetime if datetime
+  end
+
+  protected
+
+  def default_date_format
+    '%m/%d/%Y'
+  end
+
+  def default_date_format
+    '%I:%M %p'
   end
 
   private
