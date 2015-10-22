@@ -21,7 +21,7 @@ class DateParams::Parser
   def parse_date_param!(field = param)
     date_string = traversed_params.try(:[], field)
     return if date_string.blank?
-    inferred_date_format = date_string =~ /\d{4}-\d{2}-\d{2}/ ? '%Y-%m-%d' : date_format
+    inferred_date_format = date_string =~ /\d{4}-\d{2}-\d{2}/ ? '%Y-%m-%d' : date_format.try(:call) || date_format
     date = Date.strptime(date_string, inferred_date_format)
     traversed_params[field] = date if date
   end
