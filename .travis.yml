@@ -1,3 +1,64 @@
 language: ruby
+sudo: false
+
+cache: bundler
+
+bundler_args: --no-deployment --binstubs=./bin
+
+before_install:
+  - "echo 'gem: --no-ri --no-rdoc' > ~/.gemrc"
+  - gem update --system
+  - gem --version
+  - bash ./install-bundler.sh
+  - bundle --version
+
+install:
+  - bundle config --local path vendor/bundle
+  - bundle config --local jobs 3
+  - bundle config --local retry 3
+  - bundle config --local binstubs ./bin
+  - bundle config --local bin ./bin
+  - bundle install
+  - gem env
+  - bundle env
+
+script:
+   - echo $BUNDLE_GEMFILE
+   - bundle exec rake
+
+gemfile:
+  - gemfiles/rails_3.2.8.gemfile
+  - gemfiles/rails_4.0.0.gemfile
+  - gemfiles/rails_4.1.1.gemfile
+  - gemfiles/rails_4.2.0.gemfile
+  - gemfiles/rails_5.0.0.gemfile
+  - gemfiles/rails_5.1.7.gemfile
+  - gemfiles/rails_5.2.3.gemfile
+  - gemfiles/rails_6.0.0.gemfile
+matrix:
+  fast_finish: true
+  allow_failures:
+  - rvm: 2.5.3
+  exclude:
+  - rvm: 2.3.8
+    gemfile: gemfiles/rails_5.1.7.gemfile
+  - rvm: 2.3.8
+    gemfile: gemfiles/rails_5.2.3.gemfile
+  - rvm: 2.3.8
+    gemfile: gemfiles/rails_6.0.0.gemfile
+  - rvm: 2.5.3
+    gemfile: gemfiles/rails_3.2.8.gemfile
+  - rvm: 2.5.3
+    gemfile: gemfiles/rails_4.0.0.gemfile
+  - rvm: 2.5.3
+    gemfile: gemfiles/rails_4.1.1.gemfile
+  - rvm: 2.5.3
+    gemfile: gemfiles/rails_4.2.0.gemfile
+  - rvm: 2.5.3
+    gemfile: gemfiles/rails_5.0.0.gemfile
 rvm:
-  - 1.9.3
+  - 2.3.8
+  - 2.5.3
+notifications:
+  email: false
+
