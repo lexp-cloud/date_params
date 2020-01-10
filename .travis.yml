@@ -1,3 +1,91 @@
 language: ruby
+
+cache: bundler
+
+bundler_args: --no-deployment --binstubs=./bin
+
+before_install:
+  - "echo 'gem: --no-ri --no-rdoc' > ~/.gemrc"
+  - rvm rubygems current
+  - gem update --system || true
+  - gem --version
+  - source ./install-bundler.sh
+  - bundle ${MY_BUNDLER_VERSION} --version
+
+install:
+  - bundle ${MY_BUNDLER_VERSION} config --local path vendor/bundle
+  - bundle ${MY_BUNDLER_VERSION} config --local jobs 3
+  - bundle ${MY_BUNDLER_VERSION} config --local retry 3
+  - bundle ${MY_BUNDLER_VERSION} config --local binstubs ./bin
+  - bundle ${MY_BUNDLER_VERSION} config --local bin ./bin
+  - bundle ${MY_BUNDLER_VERSION} install
+  - gem env
+  - bundle ${MY_BUNDLER_VERSION} env
+
+script:
+   - echo $BUNDLE_GEMFILE
+   - bundle ${MY_BUNDLER_VERSION} exec rake
+
+gemfile:
+  - gemfiles/rails_3.2.8.gemfile
+  - gemfiles/rails_4.0.0.gemfile
+  - gemfiles/rails_4.1.1.gemfile
+  - gemfiles/rails_4.2.0.gemfile
+  - gemfiles/rails_5.0.0.gemfile
+  - gemfiles/rails_5.1.7.gemfile
+  - gemfiles/rails_5.2.3.gemfile
+  - gemfiles/rails_6.0.0.gemfile
+matrix:
+  fast_finish: true
+  allow_failures:
+  - rvm: 2.5.3
+  exclude:
+  - rvm: 2.2.2
+    gemfile: gemfiles/rails_5.1.7.gemfile
+  - rvm: 2.2.2
+    gemfile: gemfiles/rails_5.2.3.gemfile
+  - rvm: 2.2.2
+    gemfile: gemfiles/rails_6.0.0.gemfile
+  - rvm: 2.3.8
+    gemfile: gemfiles/rails_5.1.7.gemfile
+  - rvm: 2.3.8
+    gemfile: gemfiles/rails_5.2.3.gemfile
+  - rvm: 2.3.8
+    gemfile: gemfiles/rails_6.0.0.gemfile
+  - rvm: 2.4.0
+    gemfile: gemfiles/rails_3.2.8.gemfile
+  - rvm: 2.4.0
+    gemfile: gemfiles/rails_4.0.0.gemfile
+  - rvm: 2.4.0
+    gemfile: gemfiles/rails_4.1.1.gemfile
+  - rvm: 2.4.0
+    gemfile: gemfiles/rails_4.2.0.gemfile
+  - rvm: 2.4.0
+    gemfile: gemfiles/rails_6.0.0.gemfile
+  - rvm: 2.5.3
+    gemfile: gemfiles/rails_3.2.8.gemfile
+  - rvm: 2.5.3
+    gemfile: gemfiles/rails_4.0.0.gemfile
+  - rvm: 2.5.3
+    gemfile: gemfiles/rails_4.1.1.gemfile
+  - rvm: 2.5.3
+    gemfile: gemfiles/rails_4.2.0.gemfile
+  - rvm: 2.5.3
+    gemfile: gemfiles/rails_5.0.0.gemfile
+  - rvm: 2.6.5
+    gemfile: gemfiles/rails_3.2.8.gemfile
+  - rvm: 2.6.5
+    gemfile: gemfiles/rails_4.0.0.gemfile
+  - rvm: 2.6.5
+    gemfile: gemfiles/rails_4.1.1.gemfile
+  - rvm: 2.6.5
+    gemfile: gemfiles/rails_4.2.0.gemfile
 rvm:
-  - 1.9.3
+  - 2.2.2
+  - 2.3.8
+  - 2.4.0
+  - 2.5.3
+  - 2.6.5
+notifications:
+  email: false
+

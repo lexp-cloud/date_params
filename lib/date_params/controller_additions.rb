@@ -1,4 +1,4 @@
-require 'active_support/concern'
+require 'active_support'
 
 module DateParams
   module ControllerAdditions
@@ -21,11 +21,16 @@ module DateParams
           args.each { |param| DateParams::Parser.new(param, options, controller.params).parse_datetime_param! }
         end
       end
+
+      def before_filter(*args, &block)
+        return super(*args, &block) unless respond_to?(:before_action)
+        before_action(*args, &block)
+      end
     end
   end
 end
 
-if defined? ActionController::Base
+if defined?(ActionController::Base)
   ActionController::Base.class_eval do
     include DateParams::ControllerAdditions
   end

@@ -30,20 +30,20 @@ describe DateParams::Parser do
       describe 'param field is updated' do
         let(:param) { :date }
         subject { params[:date] }
-        it { should eq date }
+        it { is_expected.to eq date }
       end
 
       context 'namespace option is present' do
         let(:param) { :notified_on }
         let(:options) { { namespace: :user } }
         subject { params[:user][:notified_on] }
-        it { should eq date }
+        it { is_expected.to eq date }
       end
 
       context 'date format is yyyy-mm-dd from pagination' do
         let(:param) { :paginated_date }
         subject { params[:paginated_date] }
-        it { should eq date }
+        it { is_expected.to eq date }
       end
     end
   end
@@ -62,7 +62,8 @@ describe DateParams::Parser do
           }
       }
     end
-    let(:datetime) { Time.zone.parse '2012-08-10 00:30' }
+
+    let(:datetime) { Time.zone.parse('2012-08-10 00:30:00', Time.zone.now) }
 
     context 'invalid format' do
       let(:param) { { date: :created_at_date, time: :invalid_time, field: :created_at } }
@@ -77,21 +78,21 @@ describe DateParams::Parser do
       describe 'param field is updated' do
         let(:param) { :created_at }
         subject { params[:created_at] }
-        it { should eq datetime }
+        it { is_expected.to eq datetime }
       end
 
       context 'namespace option is present' do
         let(:param) { :notified_at }
         let(:options) { { namespace: :user } }
         subject { params[:user][:notified_at] }
-        it { should eq datetime }
+        it { is_expected.to eq datetime }
       end
 
       context 'time is empty' do
         let(:param) { { date: :created_at_date, time: :empty_time, field: :created_at } }
         it 'parses the date but not the time' do
-          params[:created_at_date].should eq datetime.to_date
-          params[:created_at].should be_nil
+          expect(params[:created_at_date]).to eq datetime.to_date
+          expect(params[:created_at]).to be_nil
         end
       end
     end
