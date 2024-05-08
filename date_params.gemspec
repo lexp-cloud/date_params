@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['bogdan@lessonplanet.com']
   spec.description   = 'Dates passed in by date-pickers or text-input fields to a rails controller need to be converted to a ruby Date to be able to be saved and manipulated.  This gem provides a simple controller add-on to facilitate the conversion.'
   spec.summary       = 'Convert date string parameters in a rails controller into Date objects.'
-  spec.homepage      = 'https://github.com/LessonPlanet/date_params'
+  spec.homepage      = 'https://github.com/lexp-cloud/date_params'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files`.split($/)
